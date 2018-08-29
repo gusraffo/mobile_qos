@@ -1,0 +1,49 @@
+Raspi Probes for mobile environmentsto measure network performance using flavorus of tests
+##########################################################################################
+
+The obectives of this project are to measure downlink and uplink speeds and behaviour of 3 Raspberry Pi3B+ through a Huawei4.5G dongle. This data will be later used for post processing cellular network status and lab tests, among others.
+
+At this day, 8/28, at the moment there are 3 Raspberry Pi3B+ available, 3 modems Huawei4.5, 3 USB GPS, 3 power sources, 3 batteries, 3 microsim cards class 10 16GB, 1 set of HDMI Monitor, usb keyboard and mouse. 
+
+Te operating system chosen is Raspbian, up to date, with NTP servers configured to get the time via internet and synchronize results of the tests in different machines after tests are run.
+
+
+QoS Tests for mobile newtork in lab environment
+###############################################
+
+The SIM cards that will be used to measure a vendor neutral Air Interface of a 4G cell, have different possibilities to set QCIs and ARPs with different GBRs, as well as downlink and uplink speed limit of the whole cell both for uplink and downlink. This will allow to create congested cells to observe the beahaviour of the different QoS profiles in each Raspi to analyze later and graph to reach to conclusion about benefits and risks associated with GBRs profiles in the live network
+
+This adjustments are made on demand directly with the specific vendors on the time qos tests are performed. 
+
+Cameras with 6 dongles for casting HD via mobile
+################################################
+
+At this stage it's possible to test as well the behaviour of the portable cameras HD with 6 LTE dongles, to see how much GBR is required in each of them. It's important to notice that an estimated average of 5Mbps is required, though eNodeB tries to go to the top if there is enough band and the traffic is in the shape of bursts with high peak rates and separated several seconds. We don't know if this is the behaviour and it would be a good chance to test one of this cameras to see if we can make it GBR using two dongles at least. It would be logical if there is GBR to have only two of the 6 with GBR of 6 Mbps each, to ensure that if only one is left, the speed can be achieved. Anyway in copetition with other services as Facebook and Instagram Video Uploads havng the GBR it will not need to use the 6 dongles, in the cells where QoS feature for uplink QoS is enabled. We need to assure a proper QoE for our own CDN provider at least with a limitation in the number of cameras that can be used in cells. Up to 3 with 2 dongles with GBR=6Mbps
+
+
+Monitoring System on customer locations
+###########$###########################
+
+There are other possibilities applied to this setup, that it could help in improving users QoE by sensing specific services and also by measuring congestion as felt by the customers in different cells.
+
+This could be done by an ftp that can give a pretty good idea of the network speed in Mbps constantly, downloading the file to the NULL directory and chosing a big 1GB file that can be downloaded endlesly in a loop or by MQTT command, both in uplink and downlink. Keeping this up and running in specific places, for example customer specific spots it could be sensing from the customer perspective. The tests could be run from a console using MQTT portocol. The GPS position would help locate the spot for later post processing or direct MQTT or VNC access.
+
+
+Creation of the CSV file for later MQTT upload every seconds=xx'
+################################################################
+
+Another important point is how to concatenate in a csv file, the speeds to the cell downlink and uplink that is beaing measured, as well as the GPS position and the NTPs server time have to be in the same line. This has to be concatenated as well with the AT commands, that are sent to the dongle, to access the different parameters that the Huawei4.5 dongle provides for later processing in a DataBase and loaded into BigData and for remote configuration, maybe even via wifi or ethernet.
+
+There are possibilites to use this kits remotely installed in a fixed position, indoors in clients houses, to keep constant measure of the cell sppeds during day and night and report them periodically via MQTT protocol to the broker and then moved into the Database. Special care must be taken to measure ar a power of -75dBm. 
+
+In this scenario a GUI can be added to a bigger piece of sofware, based on google maps, and by using the cells IDs provided by the files, it can be displayed in near real time over the google map, and over the cell KMLs, stating the speed and changing in colors from red, when it's congested, to yellow, relatively congested cell, and green when no congestion. The day and hour of the past can be easily accesed and you just need to pick up a day ond time, then press a PLAY Button and you will be able to see at different speeds how they vary in time. This could be useful for first level support to close cases easily, by going to a date, a time of the day and a place where the customer open the support case. If the probe reported speed is low at that time during to congestion, customer can be informed that ths was the case and close the ticket.
+
+With 300 probes the 18 main cities of the country could be covered easily in the most centric areas. 
+
+Another interesting application is that the raspberry pi with a fixed public ip set the Huawei4.5 dongle can be accesed remotehly via SSH or VNC(Virtual Network Computing), which offers a GUI, or via MQTT protocol in the listening port configured. The MQTT is fundamental for the lauch of tests and other technial access to for example AT commands to remotely connect and obtain the CellID number. This kits can be used by any non high technician and with the battery, it can be easily transported inside a car, with the GPS antenna, and a drive test might be used to verify coverage. It's smaller than a laptop and the user just needs to get in touch with the remote technician to follow some driving instructions.
+
+The good thing about a Raspberry is the cost, compared to an advanced SmartPhone 4.5 and also the linux than gives nearly no limits to development and the help of the community to fix bugs or make suggestions or help coding remotley.
+
+Any help, ideas or suggestion, as well as corrections are welcome. The software is put under the GNU3.0 to make it 100% open source for collaboration.
+
+Telecom's Engineer Gustavo Raffo
